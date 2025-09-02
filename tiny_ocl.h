@@ -418,7 +418,7 @@ void FatalError( const char* fmt, ... )
 #ifdef _WINDOWS_ // i.e., windows.h has been included.
 	MessageBox( NULL, t, "Fatal error", MB_OK );
 #else
-	fprintf( stderr, t );
+	fprintf( stderr, "%s", t );
 #endif
 	while (1) exit( 0 );
 }

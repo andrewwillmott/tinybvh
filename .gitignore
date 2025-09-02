@@ -41,6 +41,7 @@ tiny_bvh_renderer
 tiny_bvh_fenster
 tiny_bvh_pt
 tiny_bvh_speedtest
+tiny_bvh_minimal
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
