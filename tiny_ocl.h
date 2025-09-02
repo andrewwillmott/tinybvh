@@ -83,7 +83,7 @@ inline void* malloc32k( size_t size, void* = nullptr ) { return size == 0 ? 0 : 
 inline void free64( void* ptr, void* = nullptr ) { _ALIGNED_FREE( ptr ); }
 inline void free4k( void* ptr, void* = nullptr ) { _ALIGNED_FREE( ptr ); }
 inline void free32k( void* ptr, void* = nullptr ) { _ALIGNED_FREE( ptr ); }
-}; // namespace tiybvh
+}; // namespace tinybvh
 
 namespace tinyocl {
 
@@ -123,7 +123,7 @@ public:
 	void AlignedFree( void* ptr );
 	static void CreateInstance( OpenCLContext ctx ) { ocl = new OpenCL( ctx ); }
 	static OpenCL* GetInstance() { return ocl; }
-	inline static OpenCL* ocl = 0;
+	static OpenCL* ocl;
 };
 
 // OpenCL buffer
@@ -334,7 +334,11 @@ private:
 	template<class T> void SetArgument( int idx, T value )
 	{
 		CheckCLStarted();
-		if constexpr (sizeof( T ) == 12)
+		if 
+	#if __cplusplus >= 201700L
+			constexpr
+	#endif
+			(sizeof( T ) == 12)
 		{
 			// probably int3 / float3; pad to 16 bytes
 			unsigned tmp[4] = {};
@@ -359,17 +363,17 @@ private:
 	cl_kernel kernel;
 	cl_mem vbo_cl;
 	cl_program program;
-	inline static cl_device_id device;
-	inline static cl_context context; // simplifies some things, but limits us to one device
-	inline static cl_command_queue queue, queue2;
-	inline static char* log = 0;
-	inline static bool isNVidia = false, isAMD = false, isIntel = false, isApple = false, isOther = false;
-	inline static bool isAmpere = false, isTuring = false, isPascal = false;
-	inline static bool isAda = false, isBlackwell = false, isRubin = false, isHopper = false;
-	inline static int vendorLines = 0;
-	inline static std::vector<Kernel*> loadedKernels;
+	static cl_device_id device;
+	static cl_context context; // simplifies some things, but limits us to one device
+	static cl_command_queue queue, queue2;
+	static char* log;
+	static bool isNVidia, isAMD, isIntel, isApple, isOther;
+	static bool isAmpere, isTuring, isPascal;
+	static bool isAda, isBlackwell, isRubin, isHopper;
+	static int vendorLines;
+	static std::vector<Kernel*> loadedKernels;
 public:
-	inline static bool candoInterop = false, clStarted = false;
+	static bool candoInterop, clStarted;
 };
 
 } // namespace tinybvh
@@ -1240,5 +1244,17 @@ void Kernel::Run2D( const oclint2 count, const oclint2 lsize, cl_event* eventToW
 		CHECKCL( error = clEnqueueNDRangeKernel( queue, kernel, 2, 0, workSize, localSize, eventToWaitFor ? 1 : 0, eventToWaitFor, eventToSet ) );
 	}
 }
+
+OpenCL* OpenCL::ocl = 0;
+cl_device_id Kernel::device;
+cl_context Kernel::context; // simplifies some things, but limits us to one device
+cl_command_queue Kernel::queue, Kernel::queue2;
+char* Kernel::log = 0;
+bool Kernel::isNVidia = false, Kernel::isAMD = false, Kernel::isIntel = false, Kernel::isApple = false, Kernel::isOther = false;
+bool Kernel::isAmpere = false, Kernel::isTuring = false, Kernel::isPascal = false;
+bool Kernel::isAda = false, Kernel::isBlackwell = false, Kernel::isRubin = false, Kernel::isHopper = false;
+int Kernel::vendorLines = 0;
+std::vector<Kernel*> Kernel::loadedKernels;
+bool Kernel::candoInterop = false, Kernel::clStarted = false;
 
 #endif // TINY_OCL_IMPLEMENTATION
