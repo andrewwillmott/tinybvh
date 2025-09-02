@@ -146,7 +146,7 @@ THE SOFTWARE.
 
 // Threaded BuildAVX
 #ifndef MT_BUILD_THRESHOLD
-#define MT_BUILD_THRESHOLD 50'000 // single-threaded builds below this triangle count
+#define MT_BUILD_THRESHOLD 50000 // single-threaded builds below this triangle count
 #endif
 
 // Features
