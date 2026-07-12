@@ -92,7 +92,26 @@ static int mode = 0;
 // -----------------------------------------------------------
 void GLTFDemo::Init()
 {
-
+#if 0
+	// this code converts an obj file into a .bin file,
+	// which is a minimalistic format used in several examples.
+	scene.AddScene( "testdata/bunny10k.obj" );
+	Mesh* m = scene.meshPool[0];
+	FILE* f = fopen( "bunny10k.bin", "wb" );
+	int tris = m->triangles.size(), verts = tris * 3;
+	fwrite( &verts, 1, 4, f );
+	for( int i = 0; i < tris; i++ )
+	{
+		float4 v0 = m->triangles[i].vertex0;
+		float4 v1 = m->triangles[i].vertex1;
+		float4 v2 = m->triangles[i].vertex2;
+		fwrite( &v0, 1, 16, f );
+		fwrite( &v1, 1, 16, f );
+		fwrite( &v2, 1, 16, f );
+	}
+	fclose( f );
+	exit( 0 );
+#endif
 }
 
 // -----------------------------------------------------------
@@ -150,10 +169,10 @@ void GLTFDemo::InitScene2()
 	printf( "done.\n" );
 
 	// create OpenCL kernels
-	init = new Kernel( "raytracer.cl", "SetRenderData" );
-	render = new Kernel( "raytracer.cl", "Render" );
-	renderNormals = new Kernel( "raytracer.cl", "RenderNormals" );
-	renderDepth = new Kernel( "raytracer.cl", "RenderDepth" );
+	init = new Kernel( "kernels/raytracer.cl", "SetRenderData" );
+	render = new Kernel( "kernels/raytracer.cl", "Render" );
+	renderNormals = new Kernel( "kernels/raytracer.cl", "RenderNormals" );
+	renderDepth = new Kernel( "kernels/raytracer.cl", "RenderDepth" );
 
 	// create OpenCL buffers
 

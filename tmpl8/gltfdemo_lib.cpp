@@ -7,6 +7,7 @@
 #define TINYBVH_IMPLEMENTATION
 #define TINYBVH_USE_CUSTOM_VECTOR_TYPES
 #define NO_DOUBLE_PRECISION_SUPPORT
+// #define NO_THREADED_BUILDS
 namespace tinybvh
 {
 using bvhint2 = int2;
