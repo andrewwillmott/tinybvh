@@ -1,5 +1,5 @@
 # TinyBVH
-Single-header BVH construction and traversal library written in C++14 / "Sane C++" (or "C with classes"). C++17 is used for threading. **This library has no dependencies.**
+Single-header BVH construction and traversal library written in C++14 / "Sane C++" (or "C with classes"). C++17 is used for threading. **This library has no dependencies.** 
 
 TinyBVH is _fast_. Here is, in a nutshell, how it compares to [Intel's Embree](https://www.embree.org) and [Madmann91's BVH library](https://github.com/madmann91/bvh).
 ![Performance](images/perfgraphs.png)
@@ -19,16 +19,16 @@ TinyBVH GPU ray traversal examples are available for OpenCL and OpenGL with comp
 To use TinyOCL, just include ````tiny_ocl.h````; this will automatically cause linking with ````OpenCL.lib```` in the 'external' folder, which in turn passes on work to vendor-specific driver code.
 
 Note that the ````tiny_bvh.h```` library will work without ````tiny_ocl.h```` and remains dependency-free. The new ````tiny_ocl.h```` is only needed in projects that wish to trace rays on the GPU using BVHs created by ````tiny_bvh.h````.
-
+  
 # BVH?
 A Bounding Volume Hierarchy is a data structure used to quickly find intersections in a virtual scene; most commonly between a ray and a group of triangles. You can read more about this in a series of articles on the subject: https://jacco.ompf2.com/2022/04/13/how-to-build-a-bvh-part-1-basics .
 
 To build a BVH using TinyBVH, simply call ````BVH::Build```` on an instantiated ````BVH````. See [````tiny_bvh_minimal.cpp````](https://github.com/jbikker/tinybvh/blob/dev/examples/tiny_bvh_minimal.cpp) for a (really) small example.
-Internally, the call is forwarded to a specialized builder. There are fast builders, builders for 'high quality' BVHs and experimental builders for research and development.
+Internally, the call is forwarded to a specialized builder. There are fast builders, builders for 'high quality' BVHs and experimental builders for research and development. 
 
 A selection:
 * ````BVH::Build```` : Efficient plain-C/C+ binned SAH BVH builder which should run on any platform.
-* ````BVH::BuildAVX```` : A highly optimized version of BVH::Build for Intel and AMD CPUs.
+* ````BVH::BuildAVX```` : A highly optimized version of BVH::Build for Intel and AMD CPUs. 
 * ````BVH::BuildHQ```` : A 'spatial splits' BVH builder, for optimal BVH quality.
 
 A constructed BVH can be used to intersect a ray with geometry, using ````BVH::Intersect```` or ````BVH::IsOccluded````, for shadow (aka _any hit_) rays.
@@ -72,7 +72,7 @@ The **performance measurement tool** can be compiled with:
 
 ````g++ -mavx2 -mfma -Ofast tiny_bvh_speedtest.cpp -o tiny_bvh_speedtest```` (on Linux and Windows)
 
-````c++ --std=c++11 -framework OpenCL -Ofast tiny_bvh_speedtest.cpp -o tiny_bvh_speedtest```` (on macOS)
+````c++ --std=c++17 -framework OpenCL -Ofast tiny_bvh_speedtest.cpp -o tiny_bvh_speedtest```` (on macOS)
 
 Note: A new, more advanced benchmark tool is now available. See [build.bat](https://github.com/jbikker/tinybvh/blob/dev/build.bat) and [build_debug.bat](https://github.com/jbikker/tinybvh/blob/dev/build_debug.bat) for an example of a commandline to compile it using gcc.
 
@@ -122,7 +122,7 @@ struct BVHBuildSettings
     int optimizeIterations = 25;	// default optimization iterations.
     bool useSIMDifavailable = true;	// set to false to use the scalar reference builder.
 };
-````
+````   
 This supersedes the calls to ````::BuildHQ```` and ````::BuildAVX````, which are now invoked from ````::Build```` based on the hints in ````BVHBuildSettings````. The old interface also remains available for now.
 
 This version of the library includes the following functionality:
@@ -178,7 +178,7 @@ TinyBVH is a cross-platfrom library and should build on any platform that suppor
 * ````ARM_NEON````: Efficient BVH construction code is provided for ARM NEON. The ````BVH_SoA```` layout uses NEON intrinsics for fast traversal.
 * ````ANDROID````: This platform benefits from ARM NEON support as well as aligned memory allocation.
 * ````APPLE````: This platform benefits from ARM NEON support, dedicated paths in GPU example code and specialized support in TinyBVH itself.
-
+  
 # TinyBVH in the Wild
 A list of projects using TinyBVH:
 * Remedy's [Northlight](https://www.remedygames.com/northlight) engine uses TinyBVH in their editor and for baking per-micro-vertex displacements.
@@ -215,7 +215,7 @@ The development of this library is supported by an AMD hardware grant.
 
 
 <br><br>
-
+  
 ![Student work: Tamara Heeffer](images/tamara.jpg)
 <p align="center"><i>Image credit: Tamara Heeffer, IGAD / Breda University</i> </p>
 
